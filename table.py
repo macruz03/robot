@@ -13,7 +13,7 @@ class Table:
 
             # Checks for axes input
             if not x_axis or not y_axis:
-                msg = "Unable to place robot without cooridinates."
+                msg = "I won't know where to go unless you tell me where."
                 
                 state = False
                 return (state, msg)
@@ -22,41 +22,44 @@ class Table:
                     x = int(x_axis)
                     y = int(y_axis)
                 except Exception:
-                    msg = f"Unable to place robot, coordinates should be a number. {x_axis},{y_axis}."
+                    msg = f"Can't read that, my coordinates should be a number. {x_axis},{y_axis}."
                     state = False
                     return (state, msg)
                 
             if 0 < int(x_axis) > 4 or 0 < int(y_axis) > 4:
-                msg = f"Unable to place robot, improper coordinates. {x_axis},{y_axis}."
+                msg = f"This coordinates {x_axis},{y_axis} are way too low or too high for me."
                 state = False
                 return (state, msg)
             
             # Checks for face input
             if face.upper() not in self.FACE:
-                msg = f"Unrecognize direction {face}."
+                msg = f"I don't know this direction: {face}, Wait, is this new!?"
                 state = False
                 return (state, msg)
             
             self.robot.place(x_axis=x_axis, y_axis=y_axis, facing=face)
-            msg = f"Robot successfully placed at {x_axis},{y_axis}; facing {face}."
+            msg = f"Hello, I'm at {x_axis},{y_axis}; facing {face}."
 
         elif str(cmd).upper() == 'MOVE':
-            self.robot.move()
-            msg = f"Current location: {self.robot.x},{self.robot.y} facing {self.robot.facing}"
+            moved = self.robot.move()
+            if not moved:
+                msg = "I'm not hitting that wall! I'm staying put!"
+            else:
+                msg = f"Okay, I'm now moving to {self.robot.x},{self.robot.y} facing {self.robot.facing}."
 
         elif str(cmd).upper() == 'LEFT':
             self.robot.left()
-            msg = f"Now facing {self.robot.facing}."
+            msg = f"My current heading is {self.robot.facing}."
 
         elif str(cmd).upper() == 'RIGHT':
             self.robot.right()
-            msg = f"Now facing {self.robot.facing}"
+            msg = f"My current heading is {self.robot.facing}."
 
         elif str(cmd).upper() == 'REPORT':
             msg = self.robot.report()
 
         else:
-            msg = "Unknown command, please select from PLACE, MOVE, LEFT, RIGHT, REPORT."
+            msg = "I can't understand what you want me to do, please select from PLACE, MOVE, LEFT, RIGHT, REPORT."
             state = False
             return (state, msg)
 

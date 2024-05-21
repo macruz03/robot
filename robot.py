@@ -14,32 +14,36 @@ class Robot:
     # Move the robot one space in the direction it is facing.
     def move(self):
         face = self.facing.upper()
+        moved = True
         if face == 'NORTH':
             # Move 1 space up
             if (int(self.y) + 1) > 4:
-                print("Robot will fall off grid, retaining original location.")
+                moved = False
             else:
                 self.y = int(self.y) + 1
 
         elif face == 'EAST':
             # Move 1 space left
             if (int(self.x) + 1) > 4:
-                print("Robot will fall off grid, retaining original location.")
+                moved = False
             else:
                 self.x = int(self.x) + 1
 
         elif face == 'SOUTH':
             # Move 1 space down
             if (int(self.y) - 1) < 0:
-                print("Robot will fall off grid, retaining original location.")
+                moved = False
             else:
                 self.y = int(self.y) - 1
         elif face == 'WEST':
             # Move 1 space right
             if (int(self.x) - 1) < 0:
-                print("Robot will fall off grid, retaining original location.")
+                moved = False
             else:
                 self.x = int(self.x) - 1
+
+        return moved
+    
     # Rotate the robot facing 90 degrees to the left of it's current face.
     def left(self):
         # We will try to get the index minus one (left) of the current face.
@@ -55,6 +59,9 @@ class Robot:
     
     # Report the current coordinates and face of the robot.
     def report(self):
-        print(
-            "Current location: x-axis: " + str(self.x) + " y-axis: " + str(self.y) + " Facing: " + self.facing
+        return (
+            "I am at: x-axis: " + str(self.x) + 
+            " y-axis: " + str(self.y) + 
+            ". My current heading is: " + self.facing + 
+            "."
         )
